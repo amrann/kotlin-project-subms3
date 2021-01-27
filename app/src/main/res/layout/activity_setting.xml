@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/setting_holder"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".SettingActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/notifikasi_text" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/idSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/daily_reminder"
+        android:layout_marginBottom="12dp"
+        android:textSize="16sp" />
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_once_time"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:background="@drawable/ic_baseline_access_alarm_24" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/tv_once_time"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="16sp"-->
+<!--            android:paddingStart="10dp"-->
+<!--            android:text="@string/alarm_time" />-->
+<!--    </LinearLayout>-->
+
+</LinearLayout>
