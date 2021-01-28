@@ -13,12 +13,13 @@ import org.json.JSONObject
 class MainViewModel : ViewModel() {
     val listUsers = MutableLiveData<ArrayList<GithubUser>>()
     val listString = MutableLiveData<List<String>>()
+    private val githubAPI = BuildConfig.API_KEY_GITHUB
 
     fun setAPISearchUser(username: String) {
         var listItem = arrayListOf<GithubUser>()
         val client = AsyncHttpClient()
         val url = "https://api.github.com/search/users?q=$username"
-        client.addHeader("Authorization", "token 287d0da9dd42fd519db7f3a60a39aa88735970f5")
+        client.addHeader("Authorization", "token $githubAPI")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
@@ -78,7 +79,7 @@ class MainViewModel : ViewModel() {
         var listItem = arrayListOf<GithubUser>()
         val client = AsyncHttpClient()
         val url = "https://api.github.com/users/$username/following"
-        client.addHeader("Authorization", "token 287d0da9dd42fd519db7f3a60a39aa88735970f5")
+        client.addHeader("Authorization", "token $githubAPI")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
@@ -136,7 +137,7 @@ class MainViewModel : ViewModel() {
         var listItem = arrayListOf<GithubUser>()
         val client = AsyncHttpClient()
         val url = "https://api.github.com/users/$username/followers"
-        client.addHeader("Authorization", "token 287d0da9dd42fd519db7f3a60a39aa88735970f5")
+        client.addHeader("Authorization", "token $githubAPI")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
@@ -193,7 +194,7 @@ class MainViewModel : ViewModel() {
     fun setAPIDetailUser(username: String) {
         val client = AsyncHttpClient()
         val url = "https://api.github.com/users/$username"
-        client.addHeader("Authorization", "token 287d0da9dd42fd519db7f3a60a39aa88735970f5")
+        client.addHeader("Authorization", "token $githubAPI")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(

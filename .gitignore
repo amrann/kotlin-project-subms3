@@ -12,4 +12,4 @@
 /captures
 .externalNativeBuild
 .cxx
-token.txt
+/gradle.properties

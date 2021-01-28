@@ -37,42 +37,6 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.setTitle(R.string.bar_mainactivity)
 
-        // CARA BACA FILE #1
-//        val folder: File = File(
-//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-//                .toString() + "/token.txt/"
-//        )
-////        val cc = folder.readText()
-////        val bufferedReader: BufferedReader = File(folder.toString()).bufferedReader()
-////        val inputString = bufferedReader.use { it.readText() }
-//        Log.d("DATA FILE TOKEN.TXT : ", folder.toString())
-
-
-        // CARA BACA FILE #2
-//        val sdcard = Environment.getExternalStorageDirectory()
-//        //Get the text file
-//        val file = File(sdcard, "token.txt")
-//
-//        //Read text from file
-//        val text = StringBuilder()
-//
-//        try {
-//            val br = BufferedReader(FileReader(file))
-//            var line: String?
-//            while (br.readLine().also { line = it } != null) {
-//                text.append(line)
-//                text.append('\n')
-//            }
-//            Log.d("DATA FILE TOKEN.TXT : ", text.toString())
-//            br.close()
-//        } catch (e: IOException) {
-//            //You'll need to add proper error handling here
-//            e.printStackTrace()
-//            Log.d("Exception WOIII: ", e.message.toString())
-//        }
-
-
-
         showImageSearch(true)
 
         adapter = ListUserAdapter()
