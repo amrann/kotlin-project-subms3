@@ -60,21 +60,6 @@ class DetailActivity : AppCompatActivity() {
         val ava = gguser?.avatar
         Glide.with(this@DetailActivity).load(ava).into(idPoto)
 
-
-//        if (isfav == null) {
-//            setStatusFavorite(true)
-//        } else {
-//            setStatusFavorite(false)
-//        }
-
-
-//        setStatusFavorite(true)
-
-
-        //        val isfav = MappingHelper.mapCursorToArrayList(gguser?.name.toString().let { githubUserHelper.queryById(it) })
-//        val cursor = githubUserHelper.queryAll()
-
-
         mainViewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
