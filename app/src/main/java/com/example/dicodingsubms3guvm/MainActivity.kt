@@ -3,13 +3,14 @@ package com.example.dicodingsubms3guvm
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingsubms3guvm.adapter.ListUserAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter : ListUserAdapter
@@ -32,12 +37,53 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.setTitle(R.string.bar_mainactivity)
 
+        // CARA BACA FILE #1
+//        val folder: File = File(
+//            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+//                .toString() + "/token.txt/"
+//        )
+////        val cc = folder.readText()
+////        val bufferedReader: BufferedReader = File(folder.toString()).bufferedReader()
+////        val inputString = bufferedReader.use { it.readText() }
+//        Log.d("DATA FILE TOKEN.TXT : ", folder.toString())
+
+
+        // CARA BACA FILE #2
+//        val sdcard = Environment.getExternalStorageDirectory()
+//        //Get the text file
+//        val file = File(sdcard, "token.txt")
+//
+//        //Read text from file
+//        val text = StringBuilder()
+//
+//        try {
+//            val br = BufferedReader(FileReader(file))
+//            var line: String?
+//            while (br.readLine().also { line = it } != null) {
+//                text.append(line)
+//                text.append('\n')
+//            }
+//            Log.d("DATA FILE TOKEN.TXT : ", text.toString())
+//            br.close()
+//        } catch (e: IOException) {
+//            //You'll need to add proper error handling here
+//            e.printStackTrace()
+//            Log.d("Exception WOIII: ", e.message.toString())
+//        }
+
+
+
         showImageSearch(true)
 
         adapter = ListUserAdapter()
         idListLayout.adapter = adapter
         idListLayout.layoutManager = LinearLayoutManager(this@MainActivity)
-        idListLayout.addItemDecoration(DividerItemDecoration(this@MainActivity, LinearLayout.VERTICAL))
+        idListLayout.addItemDecoration(
+            DividerItemDecoration(
+                this@MainActivity,
+                LinearLayout.VERTICAL
+            )
+        )
 
         adapter.onItemClickListener = {
             val intent = Intent(this, DetailActivity::class.java)
@@ -46,9 +92,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        mainViewModel = ViewModelProvider (
+        mainViewModel = ViewModelProvider(
             this,
-            ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java
+            ViewModelProvider.NewInstanceFactory()
+        ).get(
+            MainViewModel::class.java
         )
 
         mainViewModel.getAPISearchUser().observe(this, Observer { searchItems ->
