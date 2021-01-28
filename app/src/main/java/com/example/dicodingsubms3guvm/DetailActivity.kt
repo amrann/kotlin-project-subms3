@@ -55,18 +55,7 @@ class DetailActivity : AppCompatActivity() {
 
         githubUserHelper = GithubUserHelper.getInstance(applicationContext)
         githubUserHelper.open()
-
-//        githubUser = intent.getParcelableExtra(FavoriteActivity.EXTRA_GU)
-
-//        supportActionBar?.apply {
-//            elevation = 0f
-//            title = ""
-//        }
-
-//        supportActionBar?.hide()
-//        val gguser = intent.getParcelableExtra<GithubUser>("iniKeyGithubUser")
-
-
+        
         val gguser = intent.getParcelableExtra<GithubUser>(MainActivity.KEY_GU)
         val idUser = gguser?.idUser
         val nama = gguser?.name
