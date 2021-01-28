@@ -26,12 +26,15 @@ import kotlinx.android.synthetic.main.activity_detail_2.idTabLayout
 import kotlinx.android.synthetic.main.activity_detail_2.idViewPager
 import kotlinx.android.synthetic.main.activity_detail_2.progressBar
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mainViewModel: MainViewModel
     private var githubUser: GithubUser? = null
     private var position: Int = 0
     private var statusFavorite: Boolean = false
+    private var idUser: String? = null
+    private var nama: String? = null
+    private var ava: String? = null
     private lateinit var githubUserHelper: GithubUserHelper
 
     companion object {
@@ -46,7 +49,6 @@ class DetailActivity : AppCompatActivity() {
         const val ALERT_DIALOG_DELETE = 20
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -55,9 +57,9 @@ class DetailActivity : AppCompatActivity() {
         githubUserHelper.open()
 
         val gguser = intent.getParcelableExtra<GithubUser>(MainActivity.KEY_GU)
-        val idUser = gguser?.idUser
-        val nama = gguser?.name
-        val ava = gguser?.avatar
+        idUser = gguser?.idUser
+        nama = gguser?.name
+        ava = gguser?.avatar
         Glide.with(this@DetailActivity).load(ava).into(idPoto)
 
         mainViewModel = ViewModelProvider(
@@ -86,177 +88,88 @@ class DetailActivity : AppCompatActivity() {
 
         githubUser = GithubUser()
 
-//        btnFav.setOnClickListener(this)
-//        val cursor = githubUserHelper.queryById(idUser)
         val cursor = githubUserHelper.queryById(idUser.toString())
         val checkIdUser = MappingHelper.mapCursorToArrayList(cursor)
-//        val getIdUser = checkIdUser.map { it.idUser }
-        val getIdUser = checkIdUser.map { it -> it.idUser}
-        Log.d("CHECK MAPPING DETAIL : ", checkIdUser.size.toString())
-        Log.d("CHECK MAPPING DETAIL : ", getIdUser.toString())
-//        when(checkIdUser.size) {
-//            0 -> setStatusFavorite(false)
-//            1 -> setStatusFavorite(true)
-//        }
+//        val getIdUser = checkIdUser.map { it -> it.idUser}
+//        Log.d("CHECK MAPPING DETAIL : ", checkIdUser.size.toString())
+//        Log.d("CHECK MAPPING DETAIL : ", getIdUser.toString())
+
         when(checkIdUser.size) {
             0 -> statusFavorite = false
             1 -> statusFavorite = true
         }
 
-        // Add favorite user
 
+        // ADD FAVORITE USER
         val fav: FloatingActionButton = findViewById(R.id.floatFavorite)
-//        fav.setOnClickListener(this)
-//        var statusFavorite = false
         setStatusFavorite(statusFavorite)
-        fav.setOnClickListener {
-            var cekStatus = statusFavorite
-//
-//            if(idUser.toString() == getIdUser.toString()){
-//
-//            }
-            if (cekStatus == true) {
-//                Toast.makeText(this, "Data sudah tambahkan " + idUser.toString(), Toast.LENGTH_SHORT).show()
-                val isDialogClose = ALERT_DIALOG_CLOSE
-                val dialogTitle: String
-                val dialogMessage: String
+        fav.setOnClickListener(this)
 
-
-
-                dialogMessage = "Apakah anda yakin ingin menghapus item ini?"
-                dialogTitle = "Hapus Favorite"
-
-                val alertDialogBuilder = AlertDialog.Builder(this)
-                alertDialogBuilder.setTitle(dialogTitle)
-                alertDialogBuilder
-                    .setMessage(dialogMessage)
-                    .setCancelable(false)
-                    .setPositiveButton("Ya") { dialog, id ->
-                        githubUserHelper.deleteById(idUser.toString()).toLong()
-//                        if (isDialogClose == ALERT_DIALOG_CLOSE) {
-//                            finish()
-//                        } else {
-////                            val alrd = githubUserHelper.queryById(id.toString())
-////                            val iddel = MappingHelper.mapCursorToArrayList(alrd)
-//                            Log.d("CHECK ALERDIALOG ID : ", githubUser?.idUser.toString())
-//
-//                            val result = githubUserHelper.deleteById(githubUser?.id.toString()).toLong()
-//
-//                            if (result > 0) {
-//                                val intent = Intent()
-//                                intent.putExtra(EXTRA_POSITION, position)
-//                                setResult(RESULT_DELETE, intent)
-////                              finish()
-//                            } else {
-//                                Toast.makeText(this, "Gagal menghapus data", Toast.LENGTH_SHORT).show()
-//                            }
-//                        }
-                        cekStatus = false
-                        setStatusFavorite(cekStatus)
-                        val intent = getIntent()
-//                        intent.putExtra(EXTRA_POSITION, position)
-//                        setResult(RESULT_DELETE, intent)
-                        setResult(RESULT_DELETE, intent)
-                        Toast.makeText(this, "Data berhasil terhapus", Toast.LENGTH_SHORT).show()
-                        startActivity(intent);
-                    }
-                    .setNegativeButton("Tidak") { dialog, id -> dialog.cancel() }
-                var alertDialog = alertDialogBuilder.create()
-                alertDialog.show()
-
-            } else {
-//                Toast.makeText(this, "Silahkan menambahkan data", Toast.LENGTH_SHORT).show
-                githubUser?.idUser = idUser.toString()
-                githubUser?.name = nama.toString()
-                githubUser?.avatar = ava.toString()
-                Log.d("CHECK GU FAV : ", githubUser.toString())
-
-                val intent = Intent()
-                intent.putExtra(MainActivity.KEY_GU, githubUser)
-//                intent.putExtra(EXTRA_POSITION, position)
-
-                val values = ContentValues()
-                values.put(DatabaseContract.GithubUserColumns.COLUMN_ID_USER, idUser)
-                values.put(DatabaseContract.GithubUserColumns.COLUMN_USERNAME, nama)
-                values.put(DatabaseContract.GithubUserColumns.COLUMN_AVATAR_URL, ava)
-//
-                var result = githubUserHelper.insert(values)
-                if (result > 0){
-                    githubUser?.id = result.toInt()
-//                    setResult(RESULT_ADD, intent)
-                    setResult(RESULT_ADD)
-//                finish()
-                    Toast.makeText(this, "Berhasil menambah data", Toast.LENGTH_SHORT).show()
-                    cekStatus = true
-                    setStatusFavorite(cekStatus)
-                    finish()
-                } else {
-                    Toast.makeText(this, "Gagal menambah data", Toast.LENGTH_SHORT).show()
-//                showAlertDialog(ALERT_DIALOG_DELETE)
-                }
-
-            }
-        }
-//        fav.setOnClickListener {
-//            statusFavorite = !statusFavorite
-//
-////          kode untuk insert database
-//
-//            githubUser?.idUser = idUser.toString()
-//            githubUser?.name = nama.toString()
-//            githubUser?.avatar = ava.toString()
-//            Log.d("CHECK GU FAV : ", githubUser.toString())
-//
-//            val intent = Intent()
-//            intent.putExtra(MainActivity.KEY_GU, githubUser)
-////            intent.putExtra(EXTRA_POSITION, position)
-//
-//            val values = ContentValues()
-//            values.put(DatabaseContract.GithubUserColumns.COLUMN_ID_USER, idUser)
-//            values.put(DatabaseContract.GithubUserColumns.COLUMN_USERNAME, nama)
-//            values.put(DatabaseContract.GithubUserColumns.COLUMN_AVATAR_URL, ava)
-////
-//            var result = githubUserHelper.insert(values)
-//            if (result > 0){
-//                githubUser?.id = result.toInt()
-////                setResult(RESULT_ADD, intent)
-//                setResult(RESULT_ADD)
-////                finish()
-//                Toast.makeText(this, "Berhasil menambah data", Toast.LENGTH_SHORT).show()
-//                setStatusFavorite(statusFavorite)
-//            } else {
-//                Toast.makeText(this, "Gagal menambah data", Toast.LENGTH_SHORT).show()
-////                showAlertDialog(ALERT_DIALOG_DELETE)
-//            }
-//
-//        }
     }
 
-//    override fun onClick(view: View) {
-//        var statusFavorite = false
-//        setStatusFavorite(statusFavorite)
-//        if (view.id == R.id.btnFav) {
-////            statusFavorite = !statusFavorite
-//
-//            val nm = namaFav
-//            Log.d("DATA NM", nm)
-//            Log.d("DATA NAMAFAV", namaFav)
-//
-////            setStatusFavorite(statusFavorite)
-//        }
-//    }
+    override fun onClick(view: View) {
+        var cekStatus = statusFavorite
+        if (cekStatus == true) {
+            val isDialogClose = ALERT_DIALOG_CLOSE
+            val dialogTitle: String
+            val dialogMessage: String
 
+            dialogMessage = "Apakah anda yakin ingin menghapus item ini?"
+            dialogTitle = "Hapus Favorite"
+
+            val alertDialogBuilder = AlertDialog.Builder(this)
+            alertDialogBuilder.setTitle(dialogTitle)
+            alertDialogBuilder
+                .setMessage(dialogMessage)
+                .setCancelable(false)
+                .setPositiveButton("Ya") { dialog, id ->
+                    githubUserHelper.deleteById(idUser.toString()).toLong()
+                    cekStatus = false
+                    setStatusFavorite(cekStatus)
+                    val intent = getIntent()
+                    setResult(RESULT_DELETE, intent)
+                    Toast.makeText(this, "Data berhasil terhapus", Toast.LENGTH_SHORT).show()
+                    startActivity(intent);
+                }
+                .setNegativeButton("Tidak") { dialog, id -> dialog.cancel() }
+            var alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+
+        } else {
+//            Toast.makeText(this, "Silahkan menambahkan data", Toast.LENGTH_SHORT).show()
+            githubUser?.idUser = idUser.toString()
+            githubUser?.name = nama.toString()
+            githubUser?.avatar = ava.toString()
+            Log.d("CHECK GU FAV : ", githubUser.toString())
+
+            val intent = Intent()
+            intent.putExtra(MainActivity.KEY_GU, githubUser)
+
+            val values = ContentValues()
+            values.put(DatabaseContract.GithubUserColumns.COLUMN_ID_USER, idUser)
+            values.put(DatabaseContract.GithubUserColumns.COLUMN_USERNAME, nama)
+            values.put(DatabaseContract.GithubUserColumns.COLUMN_AVATAR_URL, ava)
+
+            var result = githubUserHelper.insert(values)
+            if (result > 0){
+                githubUser?.id = result.toInt()
+                setResult(RESULT_ADD)
+                Toast.makeText(this, "Berhasil menambah data", Toast.LENGTH_SHORT).show()
+                cekStatus = true
+                setStatusFavorite(cekStatus)
+                finish()
+            } else {
+                Toast.makeText(this, "Gagal menambah data", Toast.LENGTH_SHORT).show()
+//                showAlertDialog(ALERT_DIALOG_DELETE)
+            }
+        }
+    }
 
     private fun setStatusFavorite(statusFavorite: Boolean) {
         if (statusFavorite) {
-            // ganti icon ke favorite
             floatFavorite.setImageResource(R.drawable.ic_baseline_favorite_24);
-//            Log.d("Status Favorite : ", statusFavorite.toString())
-
         } else {
-            // ganti icon ke not favorite
             floatFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-//            Log.d("Status Favorite : ", statusFavorite.toString())
         }
     }
 
