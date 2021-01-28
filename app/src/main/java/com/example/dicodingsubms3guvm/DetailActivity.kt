@@ -33,7 +33,7 @@ class DetailActivity : AppCompatActivity() {
     private var position: Int = 0
     private var statusFavorite: Boolean = false
     private lateinit var githubUserHelper: GithubUserHelper
-    
+
     companion object {
         const val RESULT_ADD = 101
         const val EXTRA_GU = "extra_gu"
