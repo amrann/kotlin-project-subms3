@@ -33,11 +33,6 @@ class ListFavoriteUserAdapter(private val activity: Activity) :
         notifyItemInserted(this.iniListFavorite.size - 1)
     }
 
-//    fun updateItem(position: Int, githubUser: GithubUser) {
-//        this.iniListFavorite[position] = githubUser
-//        notifyItemChanged(position, githubUser)
-//    }
-
     fun removeItem(position: Int) {
         this.iniListFavorite.removeAt(position)
         notifyItemRemoved(position)

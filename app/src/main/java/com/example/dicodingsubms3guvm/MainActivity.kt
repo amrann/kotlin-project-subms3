@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
 
         adapter.onItemClickListener = {
             val intent = Intent(this, DetailActivity::class.java)
-//            intent.putExtra("iniKeyGithubUser", it)
             intent.putExtra(KEY_GU, it)
             startActivity(intent)
         }

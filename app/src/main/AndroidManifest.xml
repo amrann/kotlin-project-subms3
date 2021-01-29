@@ -22,15 +22,17 @@
 
         <activity
             android:name=".SettingActivity"
-            android:label="Setting"
-            android:parentActivityName=".MainActivity"/>
+            android:label="Setting" />
         <activity
             android:name=".FavoriteActivity"
-            android:label="Favorite User"
-            android:parentActivityName=".MainActivity" />
+            android:label="Favorite User" />
         <activity android:name=".DetailActivity"
-            android:label="Detail User"
-            android:parentActivityName=".MainActivity"/>
+            android:label="Detail User" />
+
+<!--        <activity android:name=".DetailActivity"-->
+<!--            android:label="Detail User"-->
+<!--            android:parentActivityName=".MainActivity"/>-->
+
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

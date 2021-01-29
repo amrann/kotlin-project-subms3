@@ -23,7 +23,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
-class FavoriteActivity : AppCompatActivity() {
+class FavoriteActivitySave : AppCompatActivity() {
 
     private lateinit var listFavoriteAdapter: ListFavoriteUserAdapter
     private lateinit var githubUserHelper: GithubUserHelper
@@ -73,28 +73,40 @@ class FavoriteActivity : AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (data != null) {
-            when (requestCode) {
-                DetailActivity.REQUEST_ADD -> if (resultCode == DetailActivity.RESULT_ADD) {
-                    val githubUser = data.getParcelableExtra<GithubUser>(DetailActivity.EXTRA_GU)
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (data != null) {
+//            when (requestCode) {
+//                DetailActivity.REQUEST_ADD -> if (resultCode == DetailActivity.RESULT_ADD) {
+//                    val githubUser = data.getParcelableExtra<GithubUser>(MainActivity.KEY_GU)
 //                    githubUser?.let { listFavoriteAdapter.addItem(it) }
-                    listFavoriteAdapter.addItem(githubUser!!)
-//                    githubUser?.let { listFavoriteAdapter.addItem(it) }
-                    idListFavoriteLayout.smoothScrollToPosition(listFavoriteAdapter.itemCount - 1)
-//                    rv_notes.smoothScrollToPosition(adapter.itemCount - 1)
-                    showSnackbarMessage("Satu item berhasil ditambahkan")
-                }
-                DetailActivity.REQUEST_UPDATE -> if (resultCode == DetailActivity.RESULT_DELETE) {
-                    val position = data.getIntExtra(DetailActivity.EXTRA_POSITION, 0)
-                    listFavoriteAdapter.removeItem(position)
-//                  showSnackbarMessage("Satu item berhasil dihapus")
-                }
-            }
-        }
-    }
+//                    idListFavoriteLayout.smoothScrollToPosition(listFavoriteAdapter.itemCount - 1)
+////                    rv_notes.smoothScrollToPosition(adapter.itemCount - 1)
+////                    showSnackbarMessage("Satu item berhasil ditambahkan")
+//                }
+//                DetailActivity.REQUEST_UPDATE ->
+//                    when (resultCode) {
+//                        /* Akan dipanggil jika result codenya UPDATE
+//                           Semua data di load kembali dari awal */
+////                        DetailActivity.RESULT_UPDATE -> {
+////                            val githubUser = data.getParcelableExtra<GithubUser>(MainActivity.KEY_GU)
+////                            val position = data.getIntExtra(DetailActivity.EXTRA_POSITION, 0)
+////                            githubUser?.let { listFavoriteAdapter.updateItem(position, it) }
+//////                            rv_notes.smoothScrollToPosition(position)
+//////                            showSnackbarMessage("Satu item berhasil diubah")
+////                        }
+//                        /* Akan dipanggil jika result codenya DELETE
+//                           Delete akan menghapus data dari list berdasarkan dari position */
+//                        DetailActivity.RESULT_DELETE -> {
+//                            val position = data.getIntExtra(DetailActivity.EXTRA_POSITION, 0)
+//                            listFavoriteAdapter.removeItem(position)
+////                            showSnackbarMessage("Satu item berhasil dihapus")
+//                        }
+//                    }
+//            }
+//        }
+//    }
 
 
     override fun onDestroy() {

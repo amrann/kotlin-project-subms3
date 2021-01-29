@@ -39,7 +39,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         const val RESULT_ADD = 101
-        const val EXTRA_GU = "extra_gu"
+        const val EXTRA_GU = "extra_githubuser"
         const val EXTRA_POSITION = "extra_position"
         const val REQUEST_ADD = 100
         const val REQUEST_UPDATE = 200
@@ -94,7 +94,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 //        Log.d("CHECK MAPPING DETAIL : ", checkIdUser.size.toString())
 //        Log.d("CHECK MAPPING DETAIL : ", getIdUser.toString())
 
-        when(checkIdUser.size) {
+        when (checkIdUser.size) {
             0 -> statusFavorite = false
             1 -> statusFavorite = true
         }
@@ -123,27 +123,36 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                 .setMessage(dialogMessage)
                 .setCancelable(false)
                 .setPositiveButton("Ya") { dialog, id ->
-                    githubUserHelper.deleteById(idUser.toString()).toLong()
-                    cekStatus = false
-                    setStatusFavorite(cekStatus)
-                    val intent = getIntent()
-                    setResult(RESULT_DELETE, intent)
-                    Toast.makeText(this, "Data berhasil terhapus", Toast.LENGTH_SHORT).show()
-                    startActivity(intent);
+//                    githubUserHelper.deleteById(idUser.toString()).toLong()
+//                    cekStatus = false
+//                    setStatusFavorite(cekStatus)
+//                    val intent = getIntent()
+//                    setResult(RESULT_DELETE, intent)
+//                    Toast.makeText(this, "Data berhasil terhapus", Toast.LENGTH_SHORT).show()
+//                    startActivity(intent);
+
+                    val result = githubUserHelper.deleteById(idUser.toString()).toLong()
+                    if (result > 0) {
+                        cekStatus = false
+                        setStatusFavorite(cekStatus)
+                        val intent = Intent()
+                        intent.putExtra(EXTRA_POSITION, position)
+                        setResult(RESULT_DELETE, intent)
+//                        Toast.makeText(this, "Data berhasil terhapus", Toast.LENGTH_SHORT).show()
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Gagal Menghapus Data", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 .setNegativeButton("Tidak") { dialog, id -> dialog.cancel() }
             var alertDialog = alertDialogBuilder.create()
             alertDialog.show()
 
         } else {
-//            Toast.makeText(this, "Silahkan menambahkan data", Toast.LENGTH_SHORT).show()
-            githubUser?.idUser = idUser.toString()
-            githubUser?.name = nama.toString()
-            githubUser?.avatar = ava.toString()
-            Log.d("CHECK GU FAV : ", githubUser.toString())
 
-            val intent = Intent()
-            intent.putExtra(MainActivity.KEY_GU, githubUser)
+            val intent = Intent(this, FavoriteActivity::class.java)
+            intent.putExtra(EXTRA_GU, githubUser)
+
 
             val values = ContentValues()
             values.put(DatabaseContract.GithubUserColumns.COLUMN_ID_USER, idUser)
@@ -151,13 +160,15 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             values.put(DatabaseContract.GithubUserColumns.COLUMN_AVATAR_URL, ava)
 
             var result = githubUserHelper.insert(values)
-            if (result > 0){
+
+            if (result > 0) {
                 githubUser?.id = result.toInt()
-                setResult(RESULT_ADD)
-                Toast.makeText(this, "Berhasil menambah data", Toast.LENGTH_SHORT).show()
+                setResult(RESULT_ADD, intent)
                 cekStatus = true
                 setStatusFavorite(cekStatus)
-                finish()
+//                finish()
+                startActivity(intent)
+//                Toast.makeText(this, "Berhasil menambah data", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Gagal menambah data", Toast.LENGTH_SHORT).show()
 //                showAlertDialog(ALERT_DIALOG_DELETE)
